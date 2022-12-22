@@ -1,11 +1,81 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const PlacesApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Place {
+  final String name;
+  final String location;
+  final String text;
+  final String imagePath;
+
+  Place(this.name, this.location, this.text, this.imagePath);
+}
+
+class PlacesApp extends StatefulWidget {
+  const PlacesApp({Key? key}) : super(key: key);
+
+  @override
+  State<PlacesApp> createState() => _PlacesAppState();
+}
+
+class _PlacesAppState extends State<PlacesApp> {
+  Place _currentPlace;
+
+  List<Place> places = [
+    Place("Taj Mahal", "Agra", "It is one of the wonders of the world", 'ab/cd'),
+    Place("Laal Quila", "New Delhi", "text text text text text text text", 'ab/cd'),
+    Place("Jama Masjid", "New Delhi", "text text text text text text text", 'ab/cd'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Places App",
+      home: PlacesListScreen(
+          places: places,
+          onTapped: handlePlaceTapped
+      ),
+    );
+  }
+
+  void handlePlaceTapped(Place place) {
+    setState(() {
+      _currentPlace = place;
+    });
+  }
+}
+
+
+class PlacesListScreen extends StatelessWidget {
+  final List<Place> places;
+  final ValueChanged<Place> onTapped;
+
+  const PlacesListScreen({super.key, required this.places, required this.onTapped});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: ListView(
+        children: [
+          for (var place in places)
+            ListTile(
+              title: Text(place.name),
+              subtitle: Text(place.location),
+              onTap: () => onTapped(place),
+            )
+        ],
+      ),
+    );
+  }
+}
+
+class PlaceDetailsScreen extends StatelessWidget {
+  Place place;
+
+  PlaceDetailsScreen(this.place, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +91,16 @@ class MyApp extends StatelessWidget {
                   children: [
                 Container(
                   padding: const EdgeInsets.only(bottom: 8),
-                  child: const Text(
-                    'Oeschinen Lake Campground',
-                    style: TextStyle(
+                  child: Text(
+                    place.name,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                const Text(
-                  'Kandersteg, Switzerland',
-                  style: TextStyle(color: Colors.grey),
+                Text(
+                  place.location,
+                  style: const TextStyle(color: Colors.grey),
                 ),
               ])),
           Icon(Icons.star, color: Colors.red[500]),
@@ -48,15 +118,10 @@ class MyApp extends StatelessWidget {
       ],
     );
 
-    Widget textSection = const Padding(
-      padding: EdgeInsets.all(32),
+    Widget textSection = Padding(
+      padding: const EdgeInsets.all(32),
       child: Text(
-        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-        'Alps. Situated 1,578 meters above sea level, it is one of the '
-        'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-        'half-hour walk through pastures and pine forest, leads you to the '
-        'lake, which warms to 20 degrees Celsius in the summer. Activities '
-        'enjoyed here include rowing, and riding the summer toboggan run.',
+        place.text,
         softWrap: true,
       ),
     );
@@ -70,7 +135,7 @@ class MyApp extends StatelessWidget {
         body: ListView(
           children: [
             Image.asset(
-              'images/lake.jpg',
+              place.imagePath,
               width: 600,
               height: 240,
               fit: BoxFit.cover,
