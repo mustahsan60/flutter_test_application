@@ -21,7 +21,7 @@ class PlacesApp extends StatefulWidget {
 }
 
 class _PlacesAppState extends State<PlacesApp> {
-  Place _currentPlace;
+  Place _currentPlace = Place('name', 'location', '', 'imagePath');
 
   List<Place> places = [
     Place("Taj Mahal", "Agra", "It is one of the wonders of the world", 'ab/cd'),
