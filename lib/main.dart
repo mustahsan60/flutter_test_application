@@ -1,58 +1,202 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const PlacesApp());
+  runApp(BooksApp());
 }
 
-class Place {
-  final String name;
-  final String location;
-  final String text;
-  final String imagePath;
+class Book {
+  final String title;
+  final String author;
 
-  Place(this.name, this.location, this.text, this.imagePath);
+  Book(this.title, this.author);
 }
 
-class PlacesApp extends StatefulWidget {
-  const PlacesApp({Key? key}) : super(key: key);
-
+class BooksApp extends StatefulWidget {
   @override
-  State<PlacesApp> createState() => _PlacesAppState();
+  State<StatefulWidget> createState() => _BooksAppState();
 }
 
-class _PlacesAppState extends State<PlacesApp> {
-  Place _currentPlace = Place('name', 'location', '', 'imagePath');
-
-  List<Place> places = [
-    Place("Taj Mahal", "Agra", "It is one of the wonders of the world", 'ab/cd'),
-    Place("Laal Quila", "New Delhi", "text text text text text text text", 'ab/cd'),
-    Place("Jama Masjid", "New Delhi", "text text text text text text text", 'ab/cd'),
-  ];
+class _BooksAppState extends State<BooksApp> {
+  BookRouterDelegate _routerDelegate = BookRouterDelegate();
+  BookRouteInformationParser _routeInformationParser =
+  BookRouteInformationParser();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Places App",
-      home: PlacesListScreen(
-          places: places,
-          onTapped: handlePlaceTapped
-      ),
+    return MaterialApp.router(
+      title: 'Books App',
+      routerDelegate: _routerDelegate,
+      routeInformationParser: _routeInformationParser,
     );
-  }
-
-  void handlePlaceTapped(Place place) {
-    setState(() {
-      _currentPlace = place;
-    });
   }
 }
 
+class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
+  @override
+  Future<BookRoutePath> parseRouteInformation(
+      RouteInformation routeInformation) async {
+    final uri = Uri.parse(routeInformation.location);
+    // Handle '/'
+    if (uri.pathSegments.length == 0) {
+      return BookRoutePath.home();
+    }
 
-class PlacesListScreen extends StatelessWidget {
-  final List<Place> places;
-  final ValueChanged<Place> onTapped;
+    // Handle '/book/:id'
+    if (uri.pathSegments.length == 2) {
+      if (uri.pathSegments[0] != 'book') return BookRoutePath.unknown();
+      var remaining = uri.pathSegments[1];
+      var id = int.tryParse(remaining);
+      if (id == null) return BookRoutePath.unknown();
+      return BookRoutePath.details(id);
+    }
 
-  const PlacesListScreen({super.key, required this.places, required this.onTapped});
+    // Handle unknown routes
+    return BookRoutePath.unknown();
+  }
+
+  @override
+  RouteInformation restoreRouteInformation(BookRoutePath path) {
+    if (path.isUnknown) {
+      return RouteInformation(location: '/404');
+    }
+    if (path.isHomePage) {
+      return RouteInformation(location: '/');
+    }
+    if (path.isDetailsPage) {
+      return RouteInformation(location: '/book/${path.id}');
+    }
+    return null;
+  }
+}
+
+class BookRouterDelegate extends RouterDelegate<BookRoutePath>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<BookRoutePath> {
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  Book _selectedBook;
+  bool show404 = false;
+
+  List<Book> books = [
+    Book('Left Hand of Darkness', 'Ursula K. Le Guin'),
+    Book('Too Like the Lightning', 'Ada Palmer'),
+    Book('Kindred', 'Octavia E. Butler'),
+  ];
+
+  BookRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>();
+
+  BookRoutePath get currentConfiguration {
+    if (show404) {
+      return BookRoutePath.unknown();
+    }
+    return _selectedBook == null
+        ? BookRoutePath.home()
+        : BookRoutePath.details(books.indexOf(_selectedBook));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      key: navigatorKey,
+      pages: [
+        MaterialPage(
+          key: ValueKey('BooksListPage'),
+          child: BooksListScreen(
+            books: books,
+            onTapped: _handleBookTapped,
+          ),
+        ),
+        if (show404)
+          MaterialPage(key: ValueKey('UnknownPage'), child: UnknownScreen())
+        else if (_selectedBook != null)
+          BookDetailsPage(book: _selectedBook)
+      ],
+      onPopPage: (route, result) {
+        if (!route.didPop(result)) {
+          return false;
+        }
+
+        // Update the list of pages by setting _selectedBook to null
+        _selectedBook = null;
+        show404 = false;
+        notifyListeners();
+
+        return true;
+      },
+    );
+  }
+
+  @override
+  Future<void> setNewRoutePath(BookRoutePath path) async {
+    if (path.isUnknown) {
+      _selectedBook = null;
+      show404 = true;
+      return;
+    }
+
+    if (path.isDetailsPage) {
+      if (path.id < 0 || path.id > books.length - 1) {
+        show404 = true;
+        return;
+      }
+
+      _selectedBook = books[path.id];
+    } else {
+      _selectedBook = null;
+    }
+
+    show404 = false;
+  }
+
+  void _handleBookTapped(Book book) {
+    _selectedBook = book;
+    notifyListeners();
+  }
+}
+
+class BookDetailsPage extends Page {
+  final Book book;
+
+  BookDetailsPage({
+    this.book,
+  }) : super(key: ValueKey(book));
+
+  Route createRoute(BuildContext context) {
+    return MaterialPageRoute(
+      settings: this,
+      builder: (BuildContext context) {
+        return BookDetailsScreen(book: book);
+      },
+    );
+  }
+}
+
+class BookRoutePath {
+  final int id;
+  final bool isUnknown;
+
+  BookRoutePath.home()
+      : id = null,
+        isUnknown = false;
+
+  BookRoutePath.details(this.id) : isUnknown = false;
+
+  BookRoutePath.unknown()
+      : id = null,
+        isUnknown = true;
+
+  bool get isHomePage => id == null;
+
+  bool get isDetailsPage => id != null;
+}
+
+class BooksListScreen extends StatelessWidget {
+  final List<Book> books;
+  final ValueChanged<Book> onTapped;
+
+  BooksListScreen({
+    @required this.books,
+    @required this.onTapped,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +204,11 @@ class PlacesListScreen extends StatelessWidget {
       appBar: AppBar(),
       body: ListView(
         children: [
-          for (var place in places)
+          for (var book in books)
             ListTile(
-              title: Text(place.name),
-              subtitle: Text(place.location),
-              onTap: () => onTapped(place),
+              title: Text(book.title),
+              subtitle: Text(book.author),
+              onTap: () => onTapped(book),
             )
         ],
       ),
@@ -72,101 +216,41 @@ class PlacesListScreen extends StatelessWidget {
   }
 }
 
-class PlaceDetailsScreen extends StatelessWidget {
-  Place place;
+class BookDetailsScreen extends StatelessWidget {
+  final Book book;
 
-  PlaceDetailsScreen(this.place, {super.key});
+  BookDetailsScreen({
+    @required this.book,
+  });
 
   @override
   Widget build(BuildContext context) {
-    Color color = Theme.of(context).primaryColor;
-
-    Widget titleSection = Container(
-      padding: const EdgeInsets.all(32),
-      child: Row(
-        children: [
-          Expanded(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                Container(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    place.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Text(
-                  place.location,
-                  style: const TextStyle(color: Colors.grey),
-                ),
-              ])),
-          Icon(Icons.star, color: Colors.red[500]),
-          const Text('41')
-        ],
-      ),
-    );
-
-    Widget buttonSection = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _buildButtonColumn(color, Icons.call, 'CALL'),
-        _buildButtonColumn(color, Icons.near_me, 'ROUTE'),
-        _buildButtonColumn(color, Icons.share, 'SHARE'),
-      ],
-    );
-
-    Widget textSection = Padding(
-      padding: const EdgeInsets.all(32),
-      child: Text(
-        place.text,
-        softWrap: true,
-      ),
-    );
-
-    return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Welcome to Flutter'),
-        ),
-        body: ListView(
+    return Scaffold(
+      appBar: AppBar(),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              place.imagePath,
-              width: 600,
-              height: 240,
-              fit: BoxFit.cover,
-            ),
-            titleSection,
-            buttonSection,
-            textSection,
+            if (book != null) ...[
+              Text(book.title, style: Theme.of(context).textTheme.headline6),
+              Text(book.author, style: Theme.of(context).textTheme.subtitle1),
+            ],
           ],
-        )
+        ),
       ),
     );
   }
+}
 
-  Column _buildButtonColumn(Color color, IconData iconData, String label) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(iconData, color: color),
-        Container(
-          margin: const EdgeInsets.only(top: 8),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: color,
-            ),
-          ),
-        )
-      ],
+class UnknownScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Text('404!'),
+      ),
     );
   }
 }
