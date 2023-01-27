@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
-
 class Sticker {
   final String name;
   final String type;
   final int price;
-  final AssetImage img;
+  final String imgPath;
 
-  const Sticker(this.name, this.type, this.price, this.img);
+  const Sticker(this.name, this.type, this.price, this.imgPath);
 }
