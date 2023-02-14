@@ -1,15 +1,42 @@
 import 'package:flutter/material.dart';
 
-class TagList extends StatefulWidget {
-  const TagList({Key key}) : super(key: key);
+import '../../model/tag.dart';
 
-  @override
-  _TagListState createState() => _TagListState();
-}
+class tagList extends StatelessWidget {
+  final List<Tag> tags;
 
-class _TagListState extends State<TagList> {
+  const tagList(this.tags, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Column(
+      children: [
+        for (int x = 0; x < tags.length; x += 5)
+          subTagList(tags, x)
+      ],
+    );
+  }
+}
+
+class subTagList extends StatelessWidget {
+  final List<Tag> tags;
+  final int start;
+
+  const subTagList(this.tags, this.start, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        for (int i = start; i <= start + 5 && i < tags.length; i++)
+          Expanded(
+            child: Card(
+              child: Text(
+                  tags[i].tagType
+              ),
+            ),
+          )
+      ],
+    );
   }
 }

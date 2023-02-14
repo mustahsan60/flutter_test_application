@@ -1,8 +1,10 @@
+import 'package:flutter_test_application/model/tag.dart';
+
 class Sticker {
   final String name;
-  final String type;
+  final List<Tag> tags;
   final int price;
   final String imgPath;
 
-  const Sticker(this.name, this.type, this.price, this.imgPath);
+  const Sticker(this.name, this.tags, this.price, this.imgPath);
 }
