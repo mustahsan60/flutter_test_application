@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 
 import '../../model/tag.dart';
 
-class tagList extends StatelessWidget {
+class TagList extends StatelessWidget {
   final List<Tag> tags;
 
-  const tagList(this.tags, {Key? key}) : super(key: key);
+  const TagList(this.tags, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         for (int x = 0; x < tags.length; x += 5)
-          subTagList(tags, x)
+          SubTagList(tags, x)
       ],
     );
   }
 }
 
-class subTagList extends StatelessWidget {
+class SubTagList extends StatelessWidget {
   final List<Tag> tags;
   final int start;
 
-  const subTagList(this.tags, this.start, {Key? key}) : super(key: key);
+  const SubTagList(this.tags, this.start, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

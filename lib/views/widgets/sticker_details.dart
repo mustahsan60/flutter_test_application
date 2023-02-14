@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_application/model/sticker.dart';
+import 'package:flutter_test_application/views/widgets/tag_list.dart';
 
 class StickerDetails extends StatelessWidget {
   final Sticker sticker;
@@ -27,25 +28,11 @@ class StickerDetails extends StatelessWidget {
             ],
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                sticker.type,
-                style: const TextStyle(
-                  fontSize: 10,
-                ),
-              )
-            ),
-            Text(
-              sticker.price.toString(),
-              style: const TextStyle(
-                fontSize: 10,
-              ),
-            )
-          ],
+        TagList(
+          sticker.tags
+        ),
+        Text(
+          "Price: ${sticker.price}"
         )
       ],
     );
