@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test_application/model/sticker.dart';
-import 'package:flutter_test_application/views/widgets/sticker_details.dart';
+import 'package:flutter_test_application/navigation/sticker_route_information_parser.dart';
+import 'package:flutter_test_application/navigation/sticker_router_delegate.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,15 +11,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Sticker mySticker = const Sticker('Dash', 'Tech', 100, 'assets/images/img1.jpg');
-    return MaterialApp(
-      title: 'Test Application',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Test Application'),
-        ),
-        body: StickerDetails(mySticker)
-      ),
+    StickerRouterDelegate routerDelegate = StickerRouterDelegate();
+    StickerRouteInformationParser routeInformationParser = StickerRouteInformationParser();
+    return MaterialApp.router(
+      title: 'Sticker App',
+      routerDelegate: routerDelegate,
+      routeInformationParser: routeInformationParser,
     );
   }
 }
