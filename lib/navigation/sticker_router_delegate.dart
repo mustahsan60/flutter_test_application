@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_application/model/sticker.dart';
 import 'package:flutter_test_application/navigation/sticker_route_path.dart';
-
-import '../model/tag.dart';
 import '../views/screens/details_screen.dart';
 import '../views/screens/list_screen.dart';
 import '../views/screens/unknown_screen.dart';
@@ -15,15 +13,16 @@ class StickerRouterDelegate extends RouterDelegate<StickerRoutePath> with Change
   bool show404 = false;
 
   final List<Sticker> stickers = [
-    const Sticker('Dash', [Tag('Tech'), Tag('Coding'), Tag('Dev'), Tag('Flutter'), Tag('Cool')], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag('Tech'), Tag('Coding'), Tag('Dev'), Tag('Flutter'), Tag('Cool')], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag('Tech'), Tag('Coding'), Tag('Dev'), Tag('Flutter'), Tag('Cool')], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag('Tech'), Tag('Coding'), Tag('Dev'), Tag('Flutter'), Tag('Cool')], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag('Tech'), Tag('Coding'), Tag('Dev'), Tag('Flutter'), Tag('Cool')], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag('Tech'), Tag('Coding'), Tag('Dev'), Tag('Flutter'), Tag('Cool')], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag('Tech'), Tag('Coding'), Tag('Dev'), Tag('Flutter'), Tag('Cool')], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag('Tech'), Tag('Coding'), Tag('Dev'), Tag('Flutter'), Tag('Cool')], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag('Tech'), Tag('Coding'), Tag('Dev'), Tag('Flutter'), Tag('Cool')], 100, 'assets/images/img1.jpg'),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
   ];
 
   StickerRouterDelegate(): navigatorKey = GlobalKey<NavigatorState>();

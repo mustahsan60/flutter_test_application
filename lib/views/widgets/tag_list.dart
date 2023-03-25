@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../model/tag.dart';
+import '../../model/sticker.dart';
+
 
 class TagList extends StatelessWidget {
   final List<Tag> tags;
@@ -32,7 +33,7 @@ class SubTagList extends StatelessWidget {
           Expanded(
             child: Card(
               child: Text(
-                  tags[i].tagType
+                  tags[i].name
               ),
             ),
           )

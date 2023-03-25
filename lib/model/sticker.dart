@@ -1,4 +1,9 @@
-import 'package:flutter_test_application/model/tag.dart';
+enum Tag {
+  coding,
+  development,
+  cool,
+  cute,
+}
 
 class Sticker {
   final String name;
