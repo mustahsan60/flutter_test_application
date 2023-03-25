@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../model/sticker.dart';
+
 class StickerListItem extends StatelessWidget {
-  const StickerListItem({Key? key}) : super(key: key);
+  final Sticker sticker;
+
+  const StickerListItem(this.sticker, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -9,10 +13,10 @@ class StickerListItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const AspectRatio(
+          AspectRatio(
             aspectRatio: 18 / 11,
             child: Image(
-              image: AssetImage('assets/images/img1.jpg'),
+              image: AssetImage(sticker.imgPath),
             ),
           ),
           Padding(
@@ -20,10 +24,10 @@ class StickerListItem extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text('Flutter'),
-                SizedBox(height: 16.0),
-                Text('Price: 200'),
+              children: [
+                Text(sticker.name),
+                const SizedBox(height: 16.0),
+                Text(sticker.price.toString()),
               ],
             ),
           ),
