@@ -8,6 +8,9 @@ import '../views/screens/list_screen.dart';
 import '../views/screens/unknown_screen.dart';
 
 class StickerRouterDelegate extends RouterDelegate<StickerRoutePath> with ChangeNotifier, PopNavigatorRouterDelegateMixin<StickerRoutePath> {
+  @override
+  final GlobalKey<NavigatorState> navigatorKey;
+
   Sticker? _selectedSticker;
   bool show404 = false;
 
@@ -23,8 +26,7 @@ class StickerRouterDelegate extends RouterDelegate<StickerRoutePath> with Change
     const Sticker('Dash', [Tag('Tech'), Tag('Coding'), Tag('Dev'), Tag('Flutter'), Tag('Cool')], 100, 'assets/images/img1.jpg'),
   ];
 
-  @override
-  GlobalKey<NavigatorState>? get navigatorKey => throw GlobalKey<NavigatorState>();
+  StickerRouterDelegate(): navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   StickerRoutePath get currentConfiguration {
@@ -48,7 +50,7 @@ class StickerRouterDelegate extends RouterDelegate<StickerRoutePath> with Change
             key: ValueKey('Unknown Page'),
             child: UnknownScreen(),
           )
-        else
+        else if (_selectedSticker != null)
           MaterialPage(
             key: const ValueKey('Details Page'),
             child: DetailsScreen(_selectedSticker!),

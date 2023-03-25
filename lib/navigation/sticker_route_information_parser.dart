@@ -5,7 +5,7 @@ class StickerRouteInformationParser extends RouteInformationParser<StickerRouteP
   @override
   Future<StickerRoutePath> parseRouteInformation(
       RouteInformation routeInformation) async {
-    final uri = Uri.parse(routeInformation.location.toString());
+    final uri = Uri.parse(routeInformation.location!);
     // Handle '/'
     if (uri.pathSegments.isEmpty) {
       return StickerRoutePath.list();

@@ -6,17 +6,23 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final StickerRouterDelegate _routerDelegate = StickerRouterDelegate();
+  final StickerRouteInformationParser _routeInformationParser = StickerRouteInformationParser();
 
   @override
   Widget build(BuildContext context) {
-    StickerRouterDelegate routerDelegate = StickerRouterDelegate();
-    StickerRouteInformationParser routeInformationParser = StickerRouteInformationParser();
     return MaterialApp.router(
       title: 'Sticker App',
-      routerDelegate: routerDelegate,
-      routeInformationParser: routeInformationParser,
+      routerDelegate: _routerDelegate,
+      routeInformationParser: _routeInformationParser,
     );
   }
 }
