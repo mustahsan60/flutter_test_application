@@ -10,7 +10,7 @@ class TestScreen extends StatelessWidget {
         title: const Text('Text Screen'),
       ),
       body: const Center(
-        child: Text('Hello World'),
+        child: Image(image: AssetImage('assets/images/img_basketball.jpg')),
       )
     );
   }

@@ -10,6 +10,7 @@ class StickerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.orange,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -23,11 +24,11 @@ class StickerListItem extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(sticker.name),
                 const SizedBox(height: 16.0),
-                Text(sticker.price.toString()),
+                Text('Price: ${sticker.price}'),
               ],
             ),
           ),

@@ -13,16 +13,16 @@ class StickerRouterDelegate extends RouterDelegate<StickerRoutePath> with Change
   bool show404 = false;
 
   final List<Sticker> stickers = [
-    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
-    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg'),
+    const Sticker('BasketBall', [Tag.cool, Tag.cute], 120, 'assets/images/img_basketball.png', Colors.deepOrangeAccent),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg', Colors.deepOrangeAccent),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg', Colors.deepOrangeAccent),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg', Colors.deepOrangeAccent),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg', Colors.deepOrangeAccent),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg', Colors.deepOrangeAccent),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg', Colors.deepOrangeAccent),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg', Colors.deepOrangeAccent),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg', Colors.deepOrangeAccent),
+    const Sticker('Dash', [Tag.coding, Tag.cool, Tag.cool, Tag.cute], 100, 'assets/images/img1.jpg', Colors.deepOrangeAccent),
   ];
 
   StickerRouterDelegate(): navigatorKey = GlobalKey<NavigatorState>();

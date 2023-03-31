@@ -4,40 +4,36 @@ import '../../model/sticker.dart';
 
 
 class TagList extends StatelessWidget {
-  final List<Tag> tags;
+  final Sticker sticker;
 
-  const TagList(this.tags, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        for (int x = 0; x < tags.length; x += 5)
-          SubTagList(tags, x)
-      ],
-    );
-  }
-}
-
-class SubTagList extends StatelessWidget {
-  final List<Tag> tags;
-  final int start;
-
-  const SubTagList(this.tags, this.start, {Key? key}) : super(key: key);
+  const TagList(this.sticker, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        for (int i = start; i <= start + 5 && i < tags.length; i++)
-          Expanded(
-            child: Card(
-              child: Text(
-                  tags[i].name
-              ),
-            ),
-          )
-      ],
+    return Container(
+      alignment: Alignment.center,
+      margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+      child: SingleChildScrollView(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            for (Tag tag in sticker.tags)
+              Card(
+                color: sticker.color,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    tag.name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                    ),
+                  ),
+                )
+              )
+          ],
+        ),
+      ),
     );
   }
 }

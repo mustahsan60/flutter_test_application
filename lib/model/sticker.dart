@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 enum Tag {
   coding,
   development,
@@ -10,6 +12,7 @@ class Sticker {
   final List<Tag> tags;
   final int price;
   final String imgPath;
+  final Color color;
 
-  const Sticker(this.name, this.tags, this.price, this.imgPath);
+  const Sticker(this.name, this.tags, this.price, this.imgPath, this.color);
 }
