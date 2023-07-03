@@ -23,7 +23,7 @@ class Stars extends StatelessWidget {
   Widget _buildStar() {
     return const Icon(
       Icons.star,
-      size: 40,
+      size: 50,
     );
   }
 }
